@@ -1,4 +1,10 @@
-# app
+# Vue app
+
+Project initialized with Vue CLI.
+
+Prerequisites: 
+ - node v18.14.0 (npm v9.3.1)
+ - vue v.3
 
 ## Project setup
 ```
