@@ -11,16 +11,16 @@
     "storybook:serve": "vue-cli-service storybook:serve -p 6006 -c config/storybook"
   },
   "dependencies": {
-
     "core-js": "^3.8.3",
+    "image-webpack-loader": "^8.1.0",
     "vue": "^3.2.13",
     "vue-class-component": "^8.0.0-0"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^6.5.16",
     "@storybook/addon-links": "^6.5.16",
-    "@storybook/manager-webpack5": "^6.5.16",
     "@storybook/builder-webpack5": "^6.5.16",
+    "@storybook/manager-webpack5": "^6.5.16",
     "@storybook/vue3": "^6.5.16",
     "@types/jest": "^27.0.1",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
