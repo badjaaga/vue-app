@@ -1,17 +1,15 @@
 <template>
-  <h1><slot /></h1>
+  <p><slot /></p>
 </template>
 
 <script></script>
 
 <style scoped>
-h1 {
+p {
   font-family: "Montserrat", sans-serif;
-  font-size: 40px;
-  font-weight: 300;
-  line-height: 49px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 28.5px;
   color: #ffffff;
   margin: 0;
 }

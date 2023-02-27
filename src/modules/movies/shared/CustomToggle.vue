@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="toggle__container">
     <p>{{ props.toggleType }}</p>
     <ul class="options">
       <li
@@ -24,19 +24,25 @@ interface IProps {
 }
 
 const props = defineProps<IProps>();
-let selectedIndex = ref(0);
+let selectedIndex = ref<number>(0);
 const selectOption = (index: number) => {
   selectedIndex.value = index;
 };
 </script>
 
 <style scoped>
-.container {
+.toggle__container {
   font-family: "Montserrat", sans-serif;
   color: #ffffff;
   display: flex;
+  align-items: center;
   text-transform: uppercase;
   letter-spacing: 1px;
+  height: 40px;
+}
+
+p {
+  margin: 0;
 }
 
 .options {
@@ -65,5 +71,6 @@ const selectOption = (index: number) => {
   list-style-type: none;
   align-self: center;
   padding: 12px 24px;
+  font-size: 14px;
 }
 </style>

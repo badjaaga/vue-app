@@ -6,7 +6,7 @@
 
 <style scoped>
 input {
-  background: rgba(50, 50, 50, 0.8);
+  background: rgba(50, 50, 50, 0.6);
   mix-blend-mode: normal;
   outline: none;
   border: none;
