@@ -9,9 +9,16 @@ export const MOVIES: IMovie[] = [
     genres: ["Crime", "Horror"],
   },
   {
-    id: "1",
+    id: "2",
     title: "Watch movie",
     releaseYear: "2001",
+    posterUrl: "https://picsum.photos/350/450",
+    genres: ["Comedy", "Thriller"],
+  },
+  {
+    id: "3",
+    title: "Test movie",
+    releaseYear: "2020",
     posterUrl: "https://picsum.photos/350/450",
     genres: ["Comedy", "Thriller"],
   },

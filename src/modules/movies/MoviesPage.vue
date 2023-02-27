@@ -1,43 +1,28 @@
 <template>
   <header>
     <div class="content-wrapper">
-      <img src="@/assets/logo.svg" alt="logo" />
-
-      <div class="search">
-        <HeadingLarge>Find your movie</HeadingLarge>
-        <div class="search__input">
-          <CustomInput placeholder="Search movie" />
-          <PrimaryButton>Search</PrimaryButton>
-        </div>
-        <div class="search__options">
-          <CustomToggle
-            toggle-type="search by"
-            :toggle-options="searchByOptions"
-          />
-        </div>
+      <div class="nav-panel">
+        <span>
+          <img src="@/assets/logo.svg" alt="logo" />
+        </span>
       </div>
+      <TopContainer />
     </div>
   </header>
 
-  <section class="sort">
-    <div class="content-wrapper">
-      <div class="sort__flex-box">
-        <ParagraphMedium v-show="movies.length">
-          {{ movies.length }} items found
-        </ParagraphMedium>
-        <CustomToggle toggle-type="search by" :toggle-options="sortByOptions" />
-      </div>
-    </div>
-  </section>
+  <SortSection :movies-count="movies.length" />
 
-  <section v-if="!isLoading && movies.length" class="movies">
+  <section v-if="!isLoading" class="movies">
     <div class="content-wrapper">
-      <h1 v-if="!movies.length">No films found</h1>
+      <ParagraphLarge v-if="!movies.length">No films found</ParagraphLarge>
       <ul v-else class="movies__container">
-        <li v-for="movie in movies" :key="movie.id" class="movie__card">
-          <img :src="movie.posterUrl" alt="poster" />{{ movie.id }}
-          {{ movie.title }}
-        </li>
+        <MovieCard
+          v-for="movie in movies"
+          :key="movie.id"
+          class="movie__card"
+          :movie="movie"
+          @click="selectMovie(movie.id)"
+        />
       </ul>
     </div>
   </section>
@@ -51,17 +36,13 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
-import CustomToggle from "./shared/CustomToggle.vue";
-import CustomInput from "./shared/CustomInput.vue";
-import PrimaryButton from "./shared/PrimaryButton.vue";
-import HeadingLarge from "./shared/HeadingLarge.vue";
-import ParagraphMedium from "@/modules/movies/shared/ParagraphMedium.vue";
 import { IMovie } from "@/modules/movies/services/models";
 import CustomLoader from "@/modules/movies/shared/CustomLoader.vue";
+import TopContainer from "@/modules/movies/TopContainer.vue";
+import SortSection from "@/modules/SortSection.vue";
+import MovieCard from "@/modules/movies/MovieCard.vue";
+import ParagraphLarge from "@/modules/movies/shared/ParagraphLarge.vue";
 import { MOVIES } from "@/modules/movies/__mocks__/movies";
-
-const searchByOptions = ["title", "genre"];
-const sortByOptions = ["release date", "rating"];
 
 let isLoading = ref<boolean>(true);
 let movies = ref<IMovie[]>([]);
@@ -90,52 +71,17 @@ button:active {
   box-shadow: rgba(0, 0, 0, 0.05) 0 1px 2px 0;
 }
 
-header {
-  padding: 20px 60px 150px 60px;
-  background-image: url("@/assets/header.png");
-  height: 250px;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
 .content-wrapper {
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.search {
-  margin: 60px 60px 0;
-}
-
-.search__input {
-  margin: 25px 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-
-.search__input input {
-  flex: 1;
-}
-
-.search__options {
-  margin-top: 25px;
-}
-
-.sort {
-  padding: 20px 60px 20px 60px;
-  background-color: #555555;
-}
-
-.sort__flex-box {
-  margin: 0 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.sort__flex-box .toggle__container {
-  margin-left: auto;
+header {
+  padding: 20px 60px 150px 60px;
+  background-image: url("@/assets/header.png");
+  min-height: 250px;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .movies {
