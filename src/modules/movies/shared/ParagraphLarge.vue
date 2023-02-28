@@ -8,5 +8,6 @@
 p {
   font-size: 36px;
   color: #ffffff;
+  margin: 0;
 }
 </style>

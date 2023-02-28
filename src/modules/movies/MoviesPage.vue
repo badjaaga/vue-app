@@ -1,12 +1,23 @@
 <template>
-  <header>
+  <header
+    :style="
+      selectedMovie
+        ? 'padding: 20px 60px 50px 60px;'
+        : 'padding: 20px 60px 150px 60px;'
+    "
+  >
     <div class="content-wrapper">
       <div class="nav-panel">
         <span>
           <img src="@/assets/logo.svg" alt="logo" />
         </span>
+
+        <span v-if="selectedMovie" @click="toggleHeaderMode('search')">
+          <img src="@/assets/icons/search.svg" alt="logo" />
+        </span>
       </div>
-      <TopContainer />
+
+      <TopContainer :movie="selectedMovie" />
     </div>
   </header>
 
@@ -15,13 +26,14 @@
   <section v-if="!isLoading" class="movies">
     <div class="content-wrapper">
       <ParagraphLarge v-if="!movies.length">No films found</ParagraphLarge>
+
       <ul v-else class="movies__container">
         <MovieCard
           v-for="movie in movies"
           :key="movie.id"
           class="movie__card"
           :movie="movie"
-          @click="selectMovie(movie.id)"
+          @click="toggleHeaderMode('selectMovie', movie.id)"
         />
       </ul>
     </div>
@@ -46,6 +58,7 @@ import { MOVIES } from "@/modules/movies/__mocks__/movies";
 
 let isLoading = ref<boolean>(true);
 let movies = ref<IMovie[]>([]);
+let selectedMovie = ref<IMovie>();
 
 onMounted(() => {
   setTimeout(() => {
@@ -53,6 +66,16 @@ onMounted(() => {
     movies.value = MOVIES;
   }, 500);
 });
+
+const toggleHeaderMode = (mode: "search" | "selectMovie", id?: string) => {
+  if (mode === "selectMovie" && id) {
+    selectedMovie.value = movies.value.find((movie: IMovie) => movie.id === id);
+    window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
+  }
+  if (mode === "search") {
+    selectedMovie.value = undefined;
+  }
+};
 </script>
 
 <style lang="scss">
@@ -82,6 +105,12 @@ header {
   min-height: 250px;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.nav-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .movies {

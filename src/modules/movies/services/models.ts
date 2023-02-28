@@ -4,4 +4,7 @@ export interface IMovie {
   title: string;
   genres: string[];
   releaseYear: string;
+  rating?: number;
+  description?: string;
+  duration?: number;
 }
