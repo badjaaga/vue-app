@@ -1,6 +1,6 @@
 <template>
   <div class="toggle__container">
-    <p>{{ props.toggleType }}</p>
+    <slot />
     <ul class="options">
       <li
         v-for="(option, index) in props.toggleOptions"
@@ -19,7 +19,6 @@
 import { defineProps, ref } from "vue";
 
 interface IProps {
-  toggleType: "search by" | "sort by";
   toggleOptions: string[];
 }
 
@@ -39,10 +38,6 @@ const selectOption = (index: number) => {
   text-transform: uppercase;
   letter-spacing: 1px;
   height: 40px;
-}
-
-p {
-  margin: 0;
 }
 
 .options {

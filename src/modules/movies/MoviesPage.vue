@@ -1,11 +1,5 @@
 <template>
-  <header
-    :style="
-      selectedMovie
-        ? 'padding: 20px 60px 50px 60px;'
-        : 'padding: 20px 60px 150px 60px;'
-    "
-  >
+  <header :class="{ search: !selectedMovie, movie: selectedMovie }">
     <div class="content-wrapper">
       <div class="nav-panel">
         <span>
@@ -100,14 +94,20 @@ button:active {
 }
 
 header {
-  padding: 20px 60px 150px 60px;
   background-image: url("@/assets/header.png");
   min-height: 250px;
   background-repeat: no-repeat;
   background-size: cover;
+  .search {
+    padding: 20px 60px 150px 60px;
+  }
+  .movie {
+    padding: 20px 60px 50px 60px;
+  }
 }
 
 .nav-panel {
+  padding: 20px 60px 0 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;

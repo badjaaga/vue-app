@@ -2,14 +2,11 @@
   <section class="sort">
     <div class="content-wrapper">
       <div class="sort__flex-box">
-        <ParagraphMedium
-          v-show="props.moviesCount"
-          style="font-weight: 700; color: #ffffff"
-        >
+        <ParagraphMedium v-show="props.moviesCount" class="sort__items-count">
           {{ props.moviesCount }} items found
         </ParagraphMedium>
 
-        <CustomToggle toggle-type="search by" :toggle-options="sortByOptions" />
+        <CustomToggle :toggle-options="sortByOptions">Sort by</CustomToggle>
       </div>
     </div>
   </section>
@@ -37,5 +34,10 @@ const sortByOptions = ["release date", "rating"];
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.sort__items-count {
+  font-weight: 700;
+  color: #ffffff;
 }
 </style>

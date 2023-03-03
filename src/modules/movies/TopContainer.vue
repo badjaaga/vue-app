@@ -29,7 +29,7 @@
       <PrimaryButton>Search</PrimaryButton>
     </div>
     <div class="search__options">
-      <CustomToggle toggle-type="search by" :toggle-options="searchByOptions" />
+      <CustomToggle :toggle-options="searchByOptions">Search by</CustomToggle>
     </div>
   </div>
 </template>
