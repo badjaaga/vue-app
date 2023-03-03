@@ -1,6 +1,16 @@
 <template>
   <div class="movie-card">
-    <img :src="movie.posterUrl" alt="poster" />
+    <ImageLoader>
+      <template #image>
+        <img :src="movie.posterUrl" alt="poster" />
+      </template>
+
+      <template #preloader>
+        <div class="movie-card__loader" />
+      </template>
+
+      <template #error>Image load fails</template>
+    </ImageLoader>
     <div class="movie-card__title">
       <ParagraphMedium>{{ props.movie.title }}</ParagraphMedium>
       <span class="movie-card__release-year">{{
@@ -23,6 +33,7 @@
 import { defineProps } from "vue";
 import { IMovie } from "@/modules/movies/services/models";
 import ParagraphMedium from "@/modules/movies/shared/ParagraphMedium.vue";
+import ImageLoader from "@/modules/movies/shared/ImageLoader.vue";
 
 interface IProps {
   movie: IMovie;
@@ -33,7 +44,34 @@ const props = defineProps<IProps>();
 <style scoped>
 .movie-card {
   width: 350px;
+
+  img {
+    width: 100%;
+  }
 }
+
+.movie-card__loader {
+  width: 350px;
+  height: 450px;
+  animation-name: image-skeleton;
+  animation-duration: 3s;
+}
+
+@keyframes image-skeleton {
+  0% {
+    background-color: #232323;
+  }
+  25% {
+    background-color: #424242;
+  }
+  50% {
+    background-color: #555555;
+  }
+  100% {
+    background-color: #ffffff;
+  }
+}
+
 .movie-card__release-year {
   font-weight: 300;
   font-size: 14px;

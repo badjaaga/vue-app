@@ -56,8 +56,8 @@ let selectedMovie = ref<IMovie>();
 
 onMounted(() => {
   setTimeout(() => {
-    isLoading.value = false;
     movies.value = MOVIES;
+    isLoading.value = false;
   }, 500);
 });
 
