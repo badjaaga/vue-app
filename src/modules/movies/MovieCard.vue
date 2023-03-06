@@ -4,7 +4,7 @@
     <div class="movie-card__title">
       <ParagraphMedium>{{ props.movie.title }}</ParagraphMedium>
       <span class="movie-card__release-year">{{
-        props.movie.releaseYear
+        $filters.dateFormat(props.movie.releaseYear)
       }}</span>
     </div>
     <ul class="movie-card__genres">
@@ -23,7 +23,6 @@
 import { defineProps } from "vue";
 import { IMovie } from "@/modules/movies/services/models";
 import ParagraphMedium from "@/modules/movies/shared/ParagraphMedium.vue";
-import ImageLoader from "@/modules/movies/shared/ImageLoader.vue";
 
 interface IProps {
   movie: IMovie;
