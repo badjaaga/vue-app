@@ -1,16 +1,6 @@
 <template>
   <div class="movie-card">
-    <ImageLoader>
-      <template #image>
-        <img :src="movie.posterUrl" alt="poster" />
-      </template>
-
-      <template #preloader>
-        <div class="movie-card__loader" />
-      </template>
-
-      <template #error>Image load fails</template>
-    </ImageLoader>
+    <img v-lazy-image="movie.posterUrl" alt="poster" />
     <div class="movie-card__title">
       <ParagraphMedium>{{ props.movie.title }}</ParagraphMedium>
       <span class="movie-card__release-year">{{
@@ -50,7 +40,7 @@ const props = defineProps<IProps>();
   }
 }
 
-.movie-card__loader {
+.lazy {
   width: 350px;
   height: 450px;
   animation-name: image-skeleton;
