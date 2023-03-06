@@ -10,11 +10,15 @@
 
       <span class="movie-info__metrics">
         <p>
-          <span class="movie-info__accent"> {{ props.movie.releaseYear }}</span>
+          <span class="movie-info__accent">
+            {{ $filters.dateFormat(props.movie.releaseYear) }}</span
+          >
           year
         </p>
         <p>
-          <span class="movie-info__accent">{{ props.movie.duration }}</span> min
+          <span class="movie-info__accent">{{
+            $filters.durationFormat(props.movie.duration)
+          }}</span>
         </p>
       </span>
 
@@ -71,6 +75,7 @@ const props = defineProps<IProps>();
 
 .movie-info {
   margin-top: 30px;
+  padding-bottom: 30px;
   display: flex;
   gap: 60px;
   color: #ffffff;
