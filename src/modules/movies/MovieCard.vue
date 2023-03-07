@@ -3,9 +3,9 @@
     <img v-lazy-image="movie.posterUrl" alt="poster" />
     <div class="movie-card__title">
       <ParagraphMedium>{{ props.movie.title }}</ParagraphMedium>
-      <span class="movie-card__release-year">{{
-        $filters.dateFormat(props.movie.releaseYear)
-      }}</span>
+      <span class="movie-card__release-year">
+        <DateFormat :value="props.movie.releaseYear" />
+      </span>
     </div>
     <ul class="movie-card__genres">
       <li
@@ -23,6 +23,7 @@
 import { defineProps } from "vue";
 import { IMovie } from "@/modules/movies/services/models";
 import ParagraphMedium from "@/modules/movies/shared/ParagraphMedium.vue";
+import DateFormat from "@/modules/movies/shared/DateFormat.vue";
 
 interface IProps {
   movie: IMovie;

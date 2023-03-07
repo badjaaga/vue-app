@@ -9,16 +9,12 @@
       </span>
 
       <span class="movie-info__metrics">
-        <p>
-          <span class="movie-info__accent">
-            {{ $filters.dateFormat(props.movie.releaseYear) }}</span
-          >
-          year
+        <p class="movie-info__accent">
+          <DateFormat :value="props.movie.releaseYear" /> year
         </p>
-        <p>
-          <span class="movie-info__accent">{{
-            $filters.durationFormat(props.movie.duration)
-          }}</span>
+
+        <p class="movie-info__accent">
+          <DurationFormat :value="props.movie.duration" />
         </p>
       </span>
 
@@ -45,7 +41,10 @@ import HeadingLarge from "./shared/HeadingLarge.vue";
 import CustomInput from "./shared/CustomInput.vue";
 import PrimaryButton from "./shared/PrimaryButton.vue";
 import { IMovie } from "@/modules/movies/services/models";
+import DurationFormat from "./shared/DurationFormat.vue";
 import ParagraphLarge from "@/modules/movies/shared/ParagraphLarge.vue";
+import DateFormat from "./shared/DateFormat.vue";
+
 interface IProps {
   movie: IMovie;
 }
