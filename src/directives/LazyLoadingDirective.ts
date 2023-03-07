@@ -5,17 +5,22 @@ const observer = new IntersectionObserver(
     entries.forEach((entry) => {
       if (entry.isIntersecting && entry.target instanceof HTMLImageElement) {
         const img = new Image();
-        img.src = entry.target.dataset.src!;
+        img.src = entry.target.getAttribute("data-src")!;
         img.onload = () => {
           // @ts-ignore
-          entry.target.src = entry.target.dataset.src!;
+          entry.target.src = entry.target.getAttribute("data-src");
           entry.target.classList.remove("lazy");
+          observer.unobserve(entry.target);
+        };
+        img.onerror = () => {
+          entry.target.classList.remove("lazy");
+          entry.target.classList.add("error-placeholder");
           observer.unobserve(entry.target);
         };
       }
     });
   },
-  { rootMargin: "0px", threshold: 0.1 }
+  { rootMargin: "0px", threshold: 0.5 }
 );
 
 const lazyImageDirective = {

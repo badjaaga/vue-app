@@ -88,7 +88,7 @@ export const MOVIES: IMovie[] = [
     id: "1",
     title: "Lorem movie",
     releaseYear: new Date(),
-    posterUrl: "https://picsum.photos/350/450",
+    posterUrl: "https://picsum.photofsdfs/350/450",
     genres: ["Crime", "Horror"],
     rating: 4.5,
     description:

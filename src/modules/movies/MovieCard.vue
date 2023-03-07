@@ -40,6 +40,15 @@ const props = defineProps<IProps>();
   }
 }
 
+.error-placeholder {
+  width: 350px;
+  height: 450px;
+  background-image: url("@/assets/image-not-found.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
 .lazy {
   width: 350px;
   height: 450px;
