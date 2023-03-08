@@ -45,7 +45,7 @@ import { onMounted, ref } from "vue";
 import { IMovie } from "@/modules/movies/services/models";
 import CustomLoader from "@/modules/movies/shared/CustomLoader.vue";
 import TopContainer from "@/modules/movies/TopContainer.vue";
-import SortSection from "@/modules/SortSection.vue";
+import SortSection from "@/modules/movies/SortSection.vue";
 import MovieCard from "@/modules/movies/MovieCard.vue";
 import ParagraphLarge from "@/modules/movies/shared/ParagraphLarge.vue";
 import { MOVIES } from "@/modules/movies/__mocks__/movies";
@@ -56,8 +56,8 @@ let selectedMovie = ref<IMovie>();
 
 onMounted(() => {
   setTimeout(() => {
-    isLoading.value = false;
     movies.value = MOVIES;
+    isLoading.value = false;
   }, 500);
 });
 

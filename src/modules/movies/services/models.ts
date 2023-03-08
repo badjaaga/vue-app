@@ -3,7 +3,7 @@ export interface IMovie {
   posterUrl: string;
   title: string;
   genres: string[];
-  releaseYear: string;
+  releaseYear: Date;
   rating?: number;
   description?: string;
   duration?: number;

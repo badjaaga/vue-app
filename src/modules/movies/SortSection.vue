@@ -14,7 +14,9 @@
 
 <script lang="ts" setup>
 import { defineProps } from "vue";
-import CustomToggle from "./movies/shared/CustomToggle.vue";
+import CustomToggle from "./shared/CustomToggle.vue";
+import ParagraphMedium from "./shared/ParagraphMedium.vue";
+
 interface IProps {
   moviesCount: number;
 }
