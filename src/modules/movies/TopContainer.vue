@@ -1,20 +1,22 @@
 <template>
-  <div v-if="props.movie" class="movie-info">
-    <img :src="props.movie?.posterUrl" alt="poster" />
+  <div v-if="props.topContainerMode === 'selectMovie'" class="movie-info">
+    <img :src="props.movie?.poster_path" alt="poster" class="poster" />
 
     <div class="movie-info__description">
       <span class="movie-info__title">
         <ParagraphLarge>{{ props.movie.title }}</ParagraphLarge>
-        <span class="movie-info__rating">{{ props.movie.rating }}</span>
+        <span class="movie-info__rating" v-if="props.movie.vote_average">{{
+          props.movie.vote_average
+        }}</span>
       </span>
 
       <span class="movie-info__metrics">
         <p class="movie-info__accent">
-          <DateFormat :value="props.movie.releaseYear" /> year
+          <DateFormat :value="props.movie.release_date" /> year
         </p>
 
         <p class="movie-info__accent">
-          <DurationFormat :value="props.movie.duration" />
+          <DurationFormat :value="props.movie.runtime" />
         </p>
       </span>
 
@@ -47,6 +49,7 @@ import DateFormat from "./shared/DateFormat.vue";
 
 interface IProps {
   movie: IMovie;
+  topContainerMode: "search" | "selectMovie";
 }
 const searchByOptions = ["title", "genre"];
 const props = defineProps<IProps>();
@@ -112,5 +115,9 @@ const props = defineProps<IProps>();
 .movie-info__accent {
   color: #f65261;
   font-weight: 500;
+}
+
+.poster {
+  width: 275px;
 }
 </style>

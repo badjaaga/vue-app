@@ -15,7 +15,8 @@
     "image-webpack-loader": "^8.1.0",
     "normalize-scss": "^7.0.1",
     "vue": "^3.2.13",
-    "vue-class-component": "^8.0.0-0"
+    "vue-class-component": "^8.0.0-0",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^6.5.16",

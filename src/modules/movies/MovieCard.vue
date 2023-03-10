@@ -1,10 +1,10 @@
 <template>
   <div class="movie-card">
-    <img v-lazy-image="movie.posterUrl" alt="poster" />
+    <img v-lazy-image="movie.poster_path" />
     <div class="movie-card__title">
       <ParagraphMedium>{{ props.movie.title }}</ParagraphMedium>
       <span class="movie-card__release-year">
-        <DateFormat :value="props.movie.releaseYear" />
+        <DateFormat :value="props.movie?.release_date" />
       </span>
     </div>
     <ul class="movie-card__genres">
@@ -37,6 +37,7 @@ const props = defineProps<IProps>();
 
   img {
     width: 100%;
+    border: none; /* Remove border */
   }
 }
 
@@ -47,6 +48,7 @@ const props = defineProps<IProps>();
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  border: none; /* Remove border */
 }
 
 .lazy {
@@ -54,6 +56,7 @@ const props = defineProps<IProps>();
   height: 450px;
   animation-name: image-skeleton;
   animation-duration: 3s;
+  border: none; /* Remove border */
 }
 
 @keyframes image-skeleton {

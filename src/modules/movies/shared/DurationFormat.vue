@@ -1,10 +1,7 @@
 <template>
-  <span class="movie-info__accent"
-    >{{ valueComputed.hours }}
-    h
-    {{ valueComputed.minutes }}
-    min</span
-  >
+  <span class="movie-info__accent" v-if="value">
+    {{ valueComputed.hours }} h {{ valueComputed.minutes }} min
+  </span>
 </template>
 
 <script lang="ts" setup>

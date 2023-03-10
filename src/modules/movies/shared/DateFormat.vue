@@ -4,10 +4,10 @@
 
 <script lang="ts" setup>
 import { computed, defineProps } from "vue";
-const props = defineProps<{ value: Date }>();
+const props = defineProps<{ value: string }>();
 
 const valueComputed = computed(() => {
-  return props.value.getFullYear();
+  return props.value?.substring(0, 4) || "";
 });
 </script>
 

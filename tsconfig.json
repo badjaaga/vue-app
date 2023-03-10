@@ -27,5 +27,7 @@
     "tests/**/*.tsx"
   ],
   "exclude": ["node_modules"],
-  "noImplicitThis": true
+  "noImplicitThis": true,
+  "resolveJsonModule": true,
+  "esModuleInterop": true
 }
