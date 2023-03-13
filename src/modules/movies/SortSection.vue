@@ -6,7 +6,11 @@
           {{ props.moviesCount }} items found
         </ParagraphMedium>
 
-        <CustomToggle :toggle-options="sortByOptions">Sort by</CustomToggle>
+        <CustomToggle
+          :toggle-options="sortByOptions"
+          @toggle-option="handleToggle"
+          >Sort by</CustomToggle
+        >
       </div>
     </div>
   </section>
@@ -16,13 +20,19 @@
 import { defineProps } from "vue";
 import CustomToggle from "./shared/CustomToggle.vue";
 import ParagraphMedium from "./shared/ParagraphMedium.vue";
+import { useStore } from "vuex";
+import { RootState } from "@/store/types";
 
 interface IProps {
   moviesCount: number;
 }
 const props = defineProps<IProps>();
+const store = useStore<RootState>();
 
 const sortByOptions = ["release date", "rating"];
+const handleToggle = (value: string) => {
+  store.dispatch("movies/sortMovies", value);
+};
 </script>
 
 <style scoped>

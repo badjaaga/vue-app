@@ -1,4 +1,4 @@
-import { IMovie } from "@/modules/movies/services/models";
+import { IMovie } from "@/modules/movies/api/models";
 
 export class MovieService {
   private apiUrl = "";

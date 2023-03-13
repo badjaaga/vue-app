@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 import CustomLoader from "@/modules/movies/shared/CustomLoader.vue";
 import TopContainer from "@/modules/movies/TopContainer.vue";
 import SortSection from "@/modules/movies/SortSection.vue";
@@ -56,16 +56,15 @@ import { RootState } from "@/store/types";
 const store = useStore<RootState>();
 const topContainerMode = ref<"search" | "selectMovie">("search");
 
-onMounted(() => {
+onBeforeMount(() => {
   setTimeout(() => {
     store.dispatch("movies/fetchMovies");
+    store.dispatch("movies/sortMovies", "release date");
   }, 500);
 });
 
 const movies = computed(() => {
-  if (store?.state?.movies?.movies.length > 0) {
-    return store.getters["movies/getAllMovies"];
-  } else return [];
+  return store.getters["movies/getAllMovies"];
 });
 
 const isLoading = computed(() => {
@@ -77,13 +76,11 @@ const selectedMovie = computed(() => {
 });
 
 const toggleHeaderMode = (mode: "search" | "selectMovie", id?: number) => {
+  topContainerMode.value = mode;
+
   if (mode === "selectMovie") {
     store.dispatch("movies/fetchMovieById", id);
-    topContainerMode.value = "selectMovie";
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
-  }
-  if (mode === "search") {
-    topContainerMode.value = "search";
   }
 };
 </script>

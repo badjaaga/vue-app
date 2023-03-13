@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
 import { defineProps } from "vue";
-import { IMovie } from "@/modules/movies/services/models";
+import { IMovie } from "@/modules/movies/api/models";
 import ParagraphMedium from "@/modules/movies/shared/ParagraphMedium.vue";
 import DateFormat from "@/modules/movies/shared/DateFormat.vue";
 

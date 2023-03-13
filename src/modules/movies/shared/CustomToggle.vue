@@ -7,7 +7,7 @@
         :key="option"
         class="option"
         :class="{ selected: index === selectedIndex }"
-        @click="selectOption(index)"
+        @click="selectOption(index, option)"
       >
         {{ option }}
       </li>
@@ -16,16 +16,18 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, ref } from "vue";
+import { defineProps, ref, defineEmits } from "vue";
 
 interface IProps {
   toggleOptions: string[];
 }
 
 const props = defineProps<IProps>();
+const emit = defineEmits(["toggle-option"]);
 let selectedIndex = ref<number>(0);
-const selectOption = (index: number) => {
+const selectOption = (index: number, option: string) => {
   selectedIndex.value = index;
+  emit("toggle-option", option);
 };
 </script>
 

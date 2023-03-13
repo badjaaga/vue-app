@@ -1,21 +1,25 @@
 import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
-import { IMovie } from "@/modules/movies/services/models";
+import { IMovie } from "@/modules/movies/api/models";
 import { RootState } from "@/store/types";
 // @ts-ignore
 import mockData from "@/modules/__mock__/movies.json";
+
+export type SortOptions = "release date" | "rating";
 
 export interface MoviesState {
   movies: IMovie[];
   movie: IMovie | null;
   loading: boolean;
   error: string | null;
+  sortBy: SortOptions;
 }
 
 const state: MoviesState = {
   movies: [],
   movie: null,
-  loading: false,
+  loading: true,
   error: null,
+  sortBy: "release date",
 };
 
 const getters: GetterTree<MoviesState, RootState> = {
@@ -47,7 +51,6 @@ const mutations: MutationTree<MoviesState> = {
 
 const actions: ActionTree<MoviesState, any> = {
   async fetchMovies({ commit }) {
-    commit("setLoading", true);
     try {
       //const movieService = inject<MovieService>("movieService");
       //const response = await movieService?.fetchMovies();
@@ -69,6 +72,29 @@ const actions: ActionTree<MoviesState, any> = {
     } catch (error: any) {
       commit("setError", error.message);
     }
+  },
+  sortMovies({ commit, state }, sortOption: SortOptions) {
+    let sortBy: "release_date" | "vote_average";
+    switch (true) {
+      case sortOption === "release date":
+        sortBy = "release_date";
+        break;
+      case sortOption === "rating":
+        sortBy = "vote_average";
+        break;
+      default:
+        sortBy = "release_date";
+    }
+    const sortedMovies = [...state.movies].sort((a, b) => {
+      // compare the objects based on the specified criteria
+      // @ts-ignore
+      if (a[sortBy] < b[sortBy]) return -1;
+      // @ts-ignore
+      if (a[sortBy!] > b[sortBy!]) return 1;
+      return 0;
+    });
+    console.log(sortedMovies, sortBy);
+    commit("setMovies", sortedMovies);
   },
 };
 

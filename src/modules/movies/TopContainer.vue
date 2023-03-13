@@ -42,7 +42,7 @@ import CustomToggle from "./shared/CustomToggle.vue";
 import HeadingLarge from "./shared/HeadingLarge.vue";
 import CustomInput from "./shared/CustomInput.vue";
 import PrimaryButton from "./shared/PrimaryButton.vue";
-import { IMovie } from "@/modules/movies/services/models";
+import { IMovie } from "@/modules/movies/api/models";
 import DurationFormat from "./shared/DurationFormat.vue";
 import ParagraphLarge from "@/modules/movies/shared/ParagraphLarge.vue";
 import DateFormat from "./shared/DateFormat.vue";
