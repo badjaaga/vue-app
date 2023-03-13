@@ -5,6 +5,7 @@ import { RootState } from "@/store/types";
 import mockData from "@/modules/__mock__/movies.json";
 
 export type SortOptions = "release date" | "rating";
+export type SearchByOptions = "title" | "genre";
 
 export interface MoviesState {
   movies: IMovie[];
@@ -12,14 +13,18 @@ export interface MoviesState {
   loading: boolean;
   error: string | null;
   sortBy: SortOptions;
+  searchBy: SearchByOptions;
+  searchTerm: string;
 }
 
 const state: MoviesState = {
-  movies: [],
+  movies: mockData.movies,
   movie: null,
   loading: true,
   error: null,
   sortBy: "release date",
+  searchBy: "title",
+  searchTerm: "",
 };
 
 const getters: GetterTree<MoviesState, RootState> = {
@@ -47,21 +52,66 @@ const mutations: MutationTree<MoviesState> = {
   setMovie(state, movie: IMovie) {
     state.movie = movie;
   },
+  setSearchBy(state, option: SearchByOptions) {
+    state.searchBy = option;
+  },
+  setSortBy(state, option: SortOptions) {
+    state.sortBy = option;
+  },
+  setSearchTerm(state, option: string) {
+    state.searchTerm = option;
+  },
 };
 
 const actions: ActionTree<MoviesState, any> = {
-  async fetchMovies({ commit }) {
+  async fetchMovies({ commit, state }) {
+    let sortBy: "release_date" | "vote_average";
+
+    switch (true) {
+      case state.sortBy === "release date":
+        sortBy = "release_date";
+        break;
+      case state.sortBy === "rating":
+        sortBy = "vote_average";
+        break;
+      default:
+        sortBy = "release_date";
+    }
+
+    const sortedMovies = [...mockData.movies]
+      .sort((a, b) => {
+        if (a[sortBy] < b[sortBy]) return -1;
+        if (a[sortBy] > b[sortBy]) return 1;
+        return 0;
+      })
+      .filter((movie) => {
+        if (state.searchBy === "title") {
+          return movie.title
+            .toLowerCase()
+            .includes(state.searchTerm.toLowerCase());
+        }
+
+        if (state.searchBy === "genre") {
+          return movie.genres.some((genre: any) =>
+            genre.toLowerCase().includes(state.searchTerm.toLowerCase())
+          );
+        }
+
+        return movie;
+      });
+
     try {
       //const movieService = inject<MovieService>("movieService");
       //const response = await movieService?.fetchMovies();
       //const movies = response.data;
-      const movies = mockData.movies;
-      commit("setMovies", movies);
+
+      commit("setMovies", sortedMovies);
     } catch (error: any) {
       commit("setError", error.message);
     }
     commit("setLoading", false);
   },
+
   async fetchMovieById({ commit }, id) {
     try {
       //const movieService = inject<MovieService>("movieService");
@@ -73,28 +123,16 @@ const actions: ActionTree<MoviesState, any> = {
       commit("setError", error.message);
     }
   },
-  sortMovies({ commit, state }, sortOption: SortOptions) {
-    let sortBy: "release_date" | "vote_average";
-    switch (true) {
-      case sortOption === "release date":
-        sortBy = "release_date";
-        break;
-      case sortOption === "rating":
-        sortBy = "vote_average";
-        break;
-      default:
-        sortBy = "release_date";
-    }
-    const sortedMovies = [...state.movies].sort((a, b) => {
-      // compare the objects based on the specified criteria
-      // @ts-ignore
-      if (a[sortBy] < b[sortBy]) return -1;
-      // @ts-ignore
-      if (a[sortBy!] > b[sortBy!]) return 1;
-      return 0;
-    });
-    console.log(sortedMovies, sortBy);
-    commit("setMovies", sortedMovies);
+  setSearchOption({ commit, dispatch }, option: string) {
+    commit("setSearchBy", option);
+    dispatch("fetchMovies");
+  },
+  setSortByOption({ commit, dispatch }, option: string) {
+    commit("setSortBy", option);
+    dispatch("fetchMovies");
+  },
+  setSearchTermString({ commit, dispatch }, option: string) {
+    commit("setSearchTerm", option);
   },
 };
 

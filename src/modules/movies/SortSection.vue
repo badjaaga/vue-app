@@ -30,8 +30,9 @@ const props = defineProps<IProps>();
 const store = useStore<RootState>();
 
 const sortByOptions = ["release date", "rating"];
+
 const handleToggle = (value: string) => {
-  store.dispatch("movies/sortMovies", value);
+  store.dispatch("movies/setSortByOption", value);
 };
 </script>
 

@@ -26,18 +26,31 @@
 
   <div v-else class="search">
     <HeadingLarge>Find your movie</HeadingLarge>
+
     <div class="search__input">
-      <CustomInput placeholder="Search movie" />
-      <PrimaryButton>Search</PrimaryButton>
+      <CustomInput
+        placeholder="Search movie"
+        :value="searchTerm"
+        @update:value="searchTerm = $event"
+      />
+      <PrimaryButton @click="handleSearch">Search</PrimaryButton>
     </div>
+
     <div class="search__options">
-      <CustomToggle :toggle-options="searchByOptions">Search by</CustomToggle>
+      <CustomToggle
+        :toggle-options="searchByOptions"
+        @toggle-option="handleToggle"
+        >Search by</CustomToggle
+      >
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from "vue";
+import { defineProps, ref, watch } from "vue";
+import { useStore } from "vuex";
+
+import { RootState } from "@/store/types";
 import CustomToggle from "./shared/CustomToggle.vue";
 import HeadingLarge from "./shared/HeadingLarge.vue";
 import CustomInput from "./shared/CustomInput.vue";
@@ -51,8 +64,23 @@ interface IProps {
   movie: IMovie;
   topContainerMode: "search" | "selectMovie";
 }
+
+const store = useStore<RootState>();
 const searchByOptions = ["title", "genre"];
 const props = defineProps<IProps>();
+
+const searchTerm = ref("");
+
+watch(searchTerm, (newValue) => {
+  store.dispatch("movies/setSearchTermString", newValue);
+});
+
+const handleToggle = (value: string) => {
+  store.dispatch("movies/setSearchOption", value);
+};
+const handleSearch = () => {
+  store.dispatch("movies/fetchMovies");
+};
 </script>
 
 <style scoped>

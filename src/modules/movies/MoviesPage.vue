@@ -59,7 +59,6 @@ const topContainerMode = ref<"search" | "selectMovie">("search");
 onBeforeMount(() => {
   setTimeout(() => {
     store.dispatch("movies/fetchMovies");
-    store.dispatch("movies/sortMovies", "release date");
   }, 500);
 });
 
