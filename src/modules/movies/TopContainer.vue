@@ -50,7 +50,6 @@
 import { defineProps, ref, watch } from "vue";
 import { useStore } from "vuex";
 
-import { RootState } from "@/store/types";
 import CustomToggle from "./shared/CustomToggle.vue";
 import HeadingLarge from "./shared/HeadingLarge.vue";
 import CustomInput from "./shared/CustomInput.vue";
@@ -65,7 +64,7 @@ interface IProps {
   topContainerMode: "search" | "selectMovie";
 }
 
-const store = useStore<RootState>();
+const store = useStore();
 const searchByOptions = ["title", "genre"];
 const props = defineProps<IProps>();
 

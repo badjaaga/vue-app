@@ -51,9 +51,8 @@ import SortSection from "@/modules/movies/SortSection.vue";
 import MovieCard from "@/modules/movies/MovieCard.vue";
 import ParagraphLarge from "@/modules/movies/shared/ParagraphLarge.vue";
 import { useStore } from "vuex";
-import { RootState } from "@/store/types";
 
-const store = useStore<RootState>();
+const store = useStore();
 const topContainerMode = ref<"search" | "selectMovie">("search");
 
 onBeforeMount(() => {

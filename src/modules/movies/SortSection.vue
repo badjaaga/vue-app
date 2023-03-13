@@ -21,13 +21,12 @@ import { defineProps } from "vue";
 import CustomToggle from "./shared/CustomToggle.vue";
 import ParagraphMedium from "./shared/ParagraphMedium.vue";
 import { useStore } from "vuex";
-import { RootState } from "@/store/types";
 
 interface IProps {
   moviesCount: number;
 }
 const props = defineProps<IProps>();
-const store = useStore<RootState>();
+const store = useStore();
 
 const sortByOptions = ["release date", "rating"];
 

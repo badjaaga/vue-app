@@ -1,11 +1,13 @@
 import { IMovie } from "@/modules/movies/api/models";
+// @ts-ignore
+import mockData from "@/modules/__mock__/movies.json";
 
 export class MovieService {
-  private apiUrl = "";
+  fetchMovies(): IMovie[] {
+    return mockData.movies as IMovie[];
+  }
 
-  async fetchMovies(): Promise<IMovie[]> {
-    const response = await fetch(this.apiUrl);
-    const data = await response.json();
-    return data;
+  fetchMovieById(id: number): IMovie {
+    return mockData.movies.find((movie: IMovie) => movie.id === id);
   }
 }

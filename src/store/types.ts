@@ -1,5 +1,5 @@
-import { MoviesState } from "@/store/modules/movies";
+import { MovieService } from "@/modules/movies/api/MovieService";
 
 export interface RootState {
-  movies: MoviesState;
+  service: MovieService;
 }
