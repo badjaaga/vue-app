@@ -1,8 +1,24 @@
 <template>
-  <input type="text" />
+  <input
+    type="text"
+    :value="value"
+    @input="updateValue($event.target.value)"
+    @update:value="emit('update:value', $event)"
+  />
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { defineEmits, defineProps, ref } from "vue";
+
+const props = defineProps<{ value: string }>();
+const internalValue = ref(props.value);
+const emit = defineEmits(["update:value"]);
+
+const updateValue = (newValue: string) => {
+  internalValue.value = newValue;
+  emit("update:value", newValue);
+};
+</script>
 
 <style scoped>
 input {

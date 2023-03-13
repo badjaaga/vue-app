@@ -1,5 +1,5 @@
 <template>
-  <header :class="{ search: !selectedMovie, movie: selectedMovie }">
+  <header>
     <div class="content-wrapper">
       <div class="nav-panel">
         <span>
@@ -11,7 +11,10 @@
         </span>
       </div>
 
-      <TopContainer :movie="selectedMovie" />
+      <TopContainer
+        :movie="selectedMovie"
+        :topContainerMode="topContainerMode"
+      />
     </div>
   </header>
 
@@ -41,33 +44,41 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
-import { IMovie } from "@/modules/movies/services/models";
+import { computed, onBeforeMount, ref } from "vue";
 import CustomLoader from "@/modules/movies/shared/CustomLoader.vue";
 import TopContainer from "@/modules/movies/TopContainer.vue";
 import SortSection from "@/modules/movies/SortSection.vue";
 import MovieCard from "@/modules/movies/MovieCard.vue";
 import ParagraphLarge from "@/modules/movies/shared/ParagraphLarge.vue";
-import { MOVIES } from "@/modules/movies/__mocks__/movies";
+import { useStore } from "vuex";
 
-let isLoading = ref<boolean>(true);
-let movies = ref<IMovie[]>([]);
-let selectedMovie = ref<IMovie>();
+const store = useStore();
+const topContainerMode = ref<"search" | "selectMovie">("search");
 
-onMounted(() => {
+onBeforeMount(() => {
   setTimeout(() => {
-    movies.value = MOVIES;
-    isLoading.value = false;
+    store.dispatch("movies/fetchMovies");
   }, 500);
 });
 
-const toggleHeaderMode = (mode: "search" | "selectMovie", id?: string) => {
-  if (mode === "selectMovie" && id) {
-    selectedMovie.value = movies.value.find((movie: IMovie) => movie.id === id);
+const movies = computed(() => {
+  return store.getters["movies/getAllMovies"];
+});
+
+const isLoading = computed(() => {
+  return store.getters["movies/getLoadingState"];
+});
+
+const selectedMovie = computed(() => {
+  return store.getters["movies/getMovieById"];
+});
+
+const toggleHeaderMode = (mode: "search" | "selectMovie", id?: number) => {
+  topContainerMode.value = mode;
+
+  if (mode === "selectMovie") {
+    store.dispatch("movies/fetchMovieById", id);
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
-  }
-  if (mode === "search") {
-    selectedMovie.value = undefined;
   }
 };
 </script>
@@ -101,7 +112,7 @@ header {
   .search {
     padding: 20px 60px 150px 60px;
   }
-  .movie {
+  .selectMovie {
     padding: 20px 60px 50px 60px;
   }
 }

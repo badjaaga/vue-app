@@ -1,20 +1,22 @@
 <template>
-  <div v-if="props.movie" class="movie-info">
-    <img :src="props.movie?.posterUrl" alt="poster" />
+  <div v-if="props.topContainerMode === 'selectMovie'" class="movie-info">
+    <img :src="props.movie?.poster_path" alt="poster" class="poster" />
 
     <div class="movie-info__description">
       <span class="movie-info__title">
         <ParagraphLarge>{{ props.movie.title }}</ParagraphLarge>
-        <span class="movie-info__rating">{{ props.movie.rating }}</span>
+        <span class="movie-info__rating" v-if="props.movie.vote_average">{{
+          props.movie.vote_average
+        }}</span>
       </span>
 
       <span class="movie-info__metrics">
         <p class="movie-info__accent">
-          <DateFormat :value="props.movie.releaseYear" /> year
+          <DateFormat :value="props.movie.release_date" /> year
         </p>
 
         <p class="movie-info__accent">
-          <DurationFormat :value="props.movie.duration" />
+          <DurationFormat :value="props.movie.runtime" />
         </p>
       </span>
 
@@ -24,32 +26,60 @@
 
   <div v-else class="search">
     <HeadingLarge>Find your movie</HeadingLarge>
+
     <div class="search__input">
-      <CustomInput placeholder="Search movie" />
-      <PrimaryButton>Search</PrimaryButton>
+      <CustomInput
+        placeholder="Search movie"
+        :value="searchTerm"
+        @update:value="searchTerm = $event"
+      />
+      <PrimaryButton @click="handleSearch">Search</PrimaryButton>
     </div>
+
     <div class="search__options">
-      <CustomToggle :toggle-options="searchByOptions">Search by</CustomToggle>
+      <CustomToggle
+        :toggle-options="searchByOptions"
+        @toggle-option="handleToggle"
+        >Search by</CustomToggle
+      >
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from "vue";
+import { defineProps, ref, watch } from "vue";
+import { useStore } from "vuex";
+
 import CustomToggle from "./shared/CustomToggle.vue";
 import HeadingLarge from "./shared/HeadingLarge.vue";
 import CustomInput from "./shared/CustomInput.vue";
 import PrimaryButton from "./shared/PrimaryButton.vue";
-import { IMovie } from "@/modules/movies/services/models";
+import { IMovie } from "@/modules/movies/api/models";
 import DurationFormat from "./shared/DurationFormat.vue";
 import ParagraphLarge from "@/modules/movies/shared/ParagraphLarge.vue";
 import DateFormat from "./shared/DateFormat.vue";
 
 interface IProps {
   movie: IMovie;
+  topContainerMode: "search" | "selectMovie";
 }
+
+const store = useStore();
 const searchByOptions = ["title", "genre"];
 const props = defineProps<IProps>();
+
+const searchTerm = ref("");
+
+watch(searchTerm, (newValue) => {
+  store.dispatch("movies/setSearchTermString", newValue);
+});
+
+const handleToggle = (value: string) => {
+  store.dispatch("movies/setSearchOption", value);
+};
+const handleSearch = () => {
+  store.dispatch("movies/fetchMovies");
+};
 </script>
 
 <style scoped>
@@ -112,5 +142,9 @@ const props = defineProps<IProps>();
 .movie-info__accent {
   color: #f65261;
   font-weight: 500;
+}
+
+.poster {
+  width: 275px;
 }
 </style>
