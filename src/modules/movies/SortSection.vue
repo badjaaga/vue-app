@@ -2,11 +2,9 @@
   <section class="sort">
     <div class="content-wrapper">
       <div class="sort__flex-box">
-        <ParagraphMedium v-show="props.moviesCount" class="sort__items-count">
-          {{ props.moviesCount }} items found
-        </ParagraphMedium>
-
+        <slot />
         <CustomToggle
+          class="sort__toggle"
           :toggle-options="sortByOptions"
           @toggle-option="handleToggle"
           >Sort by</CustomToggle
@@ -19,7 +17,6 @@
 <script lang="ts" setup>
 import { defineProps } from "vue";
 import CustomToggle from "./shared/CustomToggle.vue";
-import ParagraphMedium from "./shared/ParagraphMedium.vue";
 import { useStore } from "vuex";
 
 interface IProps {
@@ -48,8 +45,7 @@ const handleToggle = (value: string) => {
   justify-content: space-between;
 }
 
-.sort__items-count {
-  font-weight: 700;
-  color: #ffffff;
+.sort__toggle {
+  margin-left: auto;
 }
 </style>

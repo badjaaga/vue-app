@@ -18,11 +18,17 @@
     </div>
   </header>
 
-  <SortSection :movies-count="movies.length" />
+  <SortSection>
+    <ParagraphMedium v-show="movies?.length" class="movies-count">
+      {{ movies?.length }} items found
+    </ParagraphMedium>
+  </SortSection>
 
   <section v-if="!isLoading" class="movies">
     <div class="content-wrapper">
-      <ParagraphLarge v-if="!movies.length">No films found</ParagraphLarge>
+      <ParagraphLarge v-if="!movies?.length" class="no-films-found"
+        >No films found</ParagraphLarge
+      >
 
       <ul v-else class="movies__container">
         <MovieCard
@@ -124,6 +130,11 @@ header {
   align-items: center;
 }
 
+.movies-count {
+  font-weight: 700;
+  color: #ffffff;
+}
+
 .movies {
   display: flex;
   background-color: #424242;
@@ -137,6 +148,10 @@ header {
   grid-template-columns: repeat(3, 1fr);
   grid-gap: calc((1200px - (3 * 350px)) / 3);
   padding: 0;
+}
+
+.no-films-found {
+  margin-top: 40px !important;
 }
 
 .movie__card {

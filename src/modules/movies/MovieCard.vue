@@ -9,7 +9,7 @@
     </div>
     <ul class="movie-card__genres">
       <li
-        v-for="genre in props.movie.genres.join(', ')"
+        v-for="genre in props.movie.genres"
         :key="genre"
         class="movie-card__genre"
       >
@@ -98,5 +98,10 @@ const props = defineProps<IProps>();
   margin: 0;
   list-style: none;
   display: inline-block;
+}
+
+/* because test reasons */
+.movie-card__genre ~ .movie-card__genre::before {
+  content: ", ";
 }
 </style>
