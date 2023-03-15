@@ -6,7 +6,7 @@ describe("Movie Duration ", () => {
   beforeEach(() => {
     wrapper = shallowMount(MovieDuration, {
       props: {
-        value: 120,
+        value: "PT120M",
       },
     });
   });
