@@ -1,5 +1,5 @@
 <template>
-  <span class="movie-info__accent" v-if="value">
+  <span class="movie-info__accent" v-if="props.value">
     {{ valueComputed.hours }} h {{ valueComputed.minutes }} min
   </span>
 </template>

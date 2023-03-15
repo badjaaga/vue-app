@@ -1,22 +1,20 @@
 <template>
   <input
     type="text"
-    :value="value"
     @input="updateValue($event.target.value)"
     @update:value="emit('update:value', $event)"
   />
 </template>
 
 <script lang="ts" setup>
-import { defineEmits, defineProps, ref } from "vue";
+import { ref, getCurrentInstance } from "vue";
 
-const props = defineProps<{ value: string }>();
-const internalValue = ref(props.value);
-const emit = defineEmits(["update:value"]);
+const instance = getCurrentInstance();
+const internalValue = ref(instance?.props.value);
 
 const updateValue = (newValue: string) => {
   internalValue.value = newValue;
-  emit("update:value", newValue);
+  instance?.emit("update:value", newValue);
 };
 </script>
 
