@@ -1,39 +1,47 @@
 <template>
-  <div v-if="props.topContainerMode === 'selectMovie'" class="movie-info">
-    <img :src="props.movie?.posterurl" alt="poster" class="poster" />
+  <div v-if="movieId" class="movie-info">
+    <router-link :to="'/'" class="search_icon">
+      <img src="@/assets/icons/search.svg" alt="logo" />
+    </router-link>
+
+    <img :src="movie.posterurl" alt="poster" class="poster" />
 
     <div class="movie-info__description">
       <span class="movie-info__title">
-        <ParagraphLarge>{{ props.movie.title }}</ParagraphLarge>
-        <span class="movie-info__rating">{{ rating }}</span>
+        <ParagraphLarge>{{ movie.title }}</ParagraphLarge>
+        <span class="movie-info__rating" v-if="movie?.imdbRating">{{
+          movie?.imdbRating
+        }}</span>
       </span>
 
       <span class="movie-info__metrics">
         <p class="movie-info__accent">
-          <DateFormat :value="props.movie.releaseDate" /> year
+          <DateFormat :value="movie.releaseDate" /> year
         </p>
 
         <p class="movie-info__accent">
-          <DurationFormat :value="props.movie.duration" />
+          <DurationFormat :value="movie.duration" />
         </p>
       </span>
 
-      <p>{{ props.movie.storyline }}</p>
+      <p>{{ movie.storyline }}</p>
     </div>
   </div>
 
   <div v-else class="search">
     <HeadingLarge>Find your movie</HeadingLarge>
 
-    <div class="search__input">
-      <CustomInput
-        id="search-movie-input"
-        placeholder="Search movie"
-        :value="searchTerm"
-        @update:value="searchTerm = $event"
-      />
-      <PrimaryButton @click="handleSearch">Search</PrimaryButton>
-    </div>
+    <form @submit.prevent="handleSearch">
+      <div class="search__input">
+        <CustomInput
+          id="search-movie-input"
+          placeholder="Search movie"
+          :value="searchTerm"
+          @update:value="searchTerm = $event"
+        />
+        <PrimaryButton type="submit">Search</PrimaryButton>
+      </div>
+    </form>
 
     <div class="search__options">
       <CustomToggle
@@ -47,44 +55,67 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineProps, ref, watch } from "vue";
+import { ref, watch, onBeforeMount, computed, onUpdated } from "vue";
 import { useStore } from "vuex";
+import { useRoute, useRouter } from "vue-router";
 
 import CustomToggle from "./shared/CustomToggle.vue";
 import HeadingLarge from "./shared/HeadingLarge.vue";
 import CustomInput from "./shared/CustomInput.vue";
 import PrimaryButton from "./shared/PrimaryButton.vue";
-import { IMovie } from "@/modules/movies/api/models";
 import DurationFormat from "./shared/DurationFormat.vue";
 import ParagraphLarge from "@/modules/movies/shared/ParagraphLarge.vue";
 import DateFormat from "./shared/DateFormat.vue";
 
-interface IProps {
-  movie: IMovie;
-  topContainerMode: "search" | "selectMovie";
-}
-
+const route = useRoute();
+const router = useRouter();
 const store = useStore();
 const searchByOptions = ["title", "genre"];
-const props = defineProps<IProps>();
-
 const searchTerm = ref("");
+
+onBeforeMount(() => {
+  const { search } = route.query;
+
+  if (search && search !== store.getters["movies/getSearchTerm"]) {
+    store.dispatch("movies/setSearchTermString", search);
+    searchTerm.value = search as string;
+  }
+
+  if (movieId.value) {
+    store.dispatch("movies/fetchMovieById", movieId.value);
+  }
+});
+
+const movie = computed(() => {
+  return store.getters["movies/getMovieById"];
+});
+
+const movieId = computed(() => {
+  return route.params.id;
+});
+
+watch(movieId, (newValue, oldValue) => {
+  console.log(newValue);
+  if (newValue !== oldValue) {
+    store.dispatch("movies/fetchMovieById", newValue);
+  }
+});
 
 watch(searchTerm, (newValue) => {
   store.dispatch("movies/setSearchTermString", newValue);
 });
 
-const rating = computed(() => {
-  return (
-    props.movie.ratings.reduce((a, b) => a + b, 0) / props.movie.ratings.length
-  ).toFixed(1);
-});
-
 const handleToggle = (value: string) => {
   store.dispatch("movies/setSearchOption", value);
 };
+
 const handleSearch = () => {
   store.dispatch("movies/fetchMovies");
+  router.push({
+    query: {
+      search: store.getters["movies/getSearchTerm"],
+    },
+  });
 };
 </script>
 
@@ -109,11 +140,13 @@ const handleSearch = () => {
 }
 
 .movie-info {
+  position: relative;
   margin-top: 30px;
   padding-bottom: 30px;
   display: flex;
   gap: 60px;
   color: #ffffff;
+  min-height: 450px;
 }
 
 .movie-info__title {
@@ -152,5 +185,13 @@ const handleSearch = () => {
 
 .poster {
   width: 275px;
+}
+
+.search_icon {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(-50%, -100%);
 }
 </style>

@@ -5,16 +5,9 @@
         <span>
           <img src="@/assets/logo.svg" alt="logo" />
         </span>
-
-        <span v-if="selectedMovie" @click="toggleHeaderMode('search')">
-          <img src="@/assets/icons/search.svg" alt="logo" />
-        </span>
       </div>
 
-      <TopContainer
-        :movie="selectedMovie"
-        :topContainerMode="topContainerMode"
-      />
+      <TopContainer />
     </div>
   </header>
 
@@ -36,7 +29,6 @@
           :key="movie.id"
           class="movie__card"
           :movie="movie"
-          @click="toggleHeaderMode('selectMovie', movie.id)"
         />
       </ul>
     </div>
@@ -50,16 +42,17 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onBeforeMount, ref } from "vue";
+import { computed, onBeforeMount } from "vue";
+import { useStore } from "vuex";
+
 import CustomLoader from "@/modules/movies/shared/CustomLoader.vue";
 import TopContainer from "@/modules/movies/TopContainer.vue";
 import SortSection from "@/modules/movies/SortSection.vue";
 import MovieCard from "@/modules/movies/MovieCard.vue";
 import ParagraphLarge from "@/modules/movies/shared/ParagraphLarge.vue";
-import { useStore } from "vuex";
+import ParagraphMedium from "@/modules/movies/shared/ParagraphMedium.vue";
 
 const store = useStore();
-const topContainerMode = ref<"search" | "selectMovie">("search");
 
 onBeforeMount(() => {
   setTimeout(() => {
@@ -74,19 +67,6 @@ const movies = computed(() => {
 const isLoading = computed(() => {
   return store.getters["movies/getLoadingState"];
 });
-
-const selectedMovie = computed(() => {
-  return store.getters["movies/getMovieById"];
-});
-
-const toggleHeaderMode = (mode: "search" | "selectMovie", id?: number) => {
-  topContainerMode.value = mode;
-
-  if (mode === "selectMovie") {
-    store.dispatch("movies/fetchMovieById", id);
-    window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
-  }
-};
 </script>
 
 <style lang="scss">

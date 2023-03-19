@@ -15,14 +15,9 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from "vue";
 import CustomToggle from "./shared/CustomToggle.vue";
 import { useStore } from "vuex";
 
-interface IProps {
-  moviesCount: number;
-}
-const props = defineProps<IProps>();
 const store = useStore();
 
 const sortByOptions = ["release date", "rating"];
