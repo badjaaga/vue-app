@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 
 const instance = axios.create({
   baseURL: "https://tame-erin-pike-toga.cyclic.app/",
-  timeout: 1000,
+  timeout: 5000,
   headers: { "Content-Type": "application/json" },
 });
 

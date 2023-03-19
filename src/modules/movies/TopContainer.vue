@@ -27,6 +27,7 @@
 
     <div class="search__input">
       <CustomInput
+        id="search-movie-input"
         placeholder="Search movie"
         :value="searchTerm"
         @update:value="searchTerm = $event"
@@ -36,6 +37,7 @@
 
     <div class="search__options">
       <CustomToggle
+        id="search-by-toggle"
         :toggle-options="searchByOptions"
         @toggle-option="handleToggle"
         >Search by</CustomToggle
