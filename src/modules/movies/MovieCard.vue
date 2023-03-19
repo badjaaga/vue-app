@@ -1,10 +1,10 @@
 <template>
   <div class="movie-card">
-    <img v-lazy-image="movie.poster_path" />
+    <img v-lazy-image="movie.posterurl" />
     <div class="movie-card__title">
       <ParagraphMedium>{{ props.movie.title }}</ParagraphMedium>
       <span class="movie-card__release-year">
-        <DateFormat :value="props.movie?.release_date" />
+        <DateFormat :value="props.movie?.releaseDate" />
       </span>
     </div>
     <ul class="movie-card__genres">

@@ -18,17 +18,19 @@ describe("MovieCard", () => {
     movie = {
       id: 447365,
       title: "Guardians of the Galaxy Vol. 3",
-      tagline: "",
+      storyline: "",
       vote_average: 5.6,
       vote_count: 9,
-      release_date: "2020-05-01",
-      poster_path:
+      releaseDate: "2020-05-01",
+      posterurl:
         "https://image.tmdb.org/t/p/w500/ldoY4fTZkGISMidNw60GHoNdgP8.jpg",
       overview: "The third film based on Marvel's Guardians of the Galaxy.",
       budget: 0,
       revenue: 0,
       genres: ["Action", "Adventure", "Science Fiction"],
-      runtime: null,
+      duration: null,
+      ratings: [1, 2, 3],
+      imdbRating: 9.0,
     };
     wrapper = mount(MovieCard, {
       props: {
@@ -55,7 +57,7 @@ describe("MovieCard", () => {
   });
 
   it("renders the movie release year", () => {
-    const year = new Date(movie.release_date).getFullYear();
+    const year = new Date(movie.releaseDate).getFullYear();
     expect(wrapper.find(".movie-card__release-year").text()).toBe(
       year.toString()
     );

@@ -6,13 +6,21 @@
 
 <script lang="ts" setup>
 import { computed, defineProps } from "vue";
-const props = defineProps<{ value: number }>();
+const props = defineProps<{ value: string }>();
 
 const valueComputed = computed(() => {
-  return {
-    hours: Math.floor(props.value / 60),
-    minutes: Math.floor(props.value % 60),
-  };
+  const replaced = props.value?.replace(/\D/g, "");
+
+  let number;
+
+  if (replaced !== "") {
+    number = Number(replaced);
+    return {
+      hours: Math.floor(number / 60),
+      minutes: Math.floor(number % 60),
+    };
+  }
+  return props.value;
 });
 </script>
 

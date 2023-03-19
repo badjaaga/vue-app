@@ -1,9 +1,7 @@
-import { inject } from "vue";
 import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 
 import { IMovie } from "@/modules/movies/api/models";
 import { RootState } from "@/store/types";
-import { MovieService } from "@/modules/movies/api/MovieService";
 
 export type SortOptions = "release date" | "rating";
 export type SearchByOptions = "title" | "genre";
@@ -67,21 +65,21 @@ const mutations: MutationTree<MoviesState> = {
 const actions: ActionTree<MoviesState, any> = {
   async fetchMovies({ commit, state, rootState }) {
     try {
-      const movieService = inject<MovieService>("movieService");
-      console.log(movieService);
-      const movies = rootState.service.fetchMovies();
+      const movies = await rootState.service
+        .fetchMovies()
+        .then((data: IMovie[]) => data);
 
-      let sortBy: "release_date" | "vote_average";
+      let sortBy: "releaseDate" | "imdbRating";
 
       switch (true) {
         case state.sortBy === "release date":
-          sortBy = "release_date";
+          sortBy = "releaseDate";
           break;
         case state.sortBy === "rating":
-          sortBy = "vote_average";
+          sortBy = "imdbRating";
           break;
         default:
-          sortBy = "release_date";
+          sortBy = "releaseDate";
       }
 
       const sortedMovies = movies
@@ -114,10 +112,9 @@ const actions: ActionTree<MoviesState, any> = {
     }
   },
 
-  async fetchMovieById({ commit }, id) {
+  async fetchMovieById({ commit, rootState }, id) {
     try {
-      const movieService = inject<MovieService>("movieService");
-      const movie = await movieService?.fetchMovieById(id);
+      const movie = await rootState.service.fetchMovieById(id);
       commit("setMovie", movie);
     } catch (error: any) {
       commit("setError", error.message);

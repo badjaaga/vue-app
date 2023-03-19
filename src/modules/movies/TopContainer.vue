@@ -1,26 +1,24 @@
 <template>
   <div v-if="props.topContainerMode === 'selectMovie'" class="movie-info">
-    <img :src="props.movie?.poster_path" alt="poster" class="poster" />
+    <img :src="props.movie?.posterurl" alt="poster" class="poster" />
 
     <div class="movie-info__description">
       <span class="movie-info__title">
         <ParagraphLarge>{{ props.movie.title }}</ParagraphLarge>
-        <span class="movie-info__rating" v-if="props.movie.vote_average">{{
-          props.movie.vote_average
-        }}</span>
+        <span class="movie-info__rating">{{ rating }}</span>
       </span>
 
       <span class="movie-info__metrics">
         <p class="movie-info__accent">
-          <DateFormat :value="props.movie.release_date" /> year
+          <DateFormat :value="props.movie.releaseDate" /> year
         </p>
 
         <p class="movie-info__accent">
-          <DurationFormat :value="props.movie.runtime" />
+          <DurationFormat :value="props.movie.duration" />
         </p>
       </span>
 
-      <p>{{ props.movie.description }}</p>
+      <p>{{ props.movie.storyline }}</p>
     </div>
   </div>
 
@@ -29,6 +27,7 @@
 
     <div class="search__input">
       <CustomInput
+        id="search-movie-input"
         placeholder="Search movie"
         :value="searchTerm"
         @update:value="searchTerm = $event"
@@ -38,6 +37,7 @@
 
     <div class="search__options">
       <CustomToggle
+        id="search-by-toggle"
         :toggle-options="searchByOptions"
         @toggle-option="handleToggle"
         >Search by</CustomToggle
@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, ref, watch } from "vue";
+import { computed, defineProps, ref, watch } from "vue";
 import { useStore } from "vuex";
 
 import CustomToggle from "./shared/CustomToggle.vue";
@@ -72,6 +72,12 @@ const searchTerm = ref("");
 
 watch(searchTerm, (newValue) => {
   store.dispatch("movies/setSearchTermString", newValue);
+});
+
+const rating = computed(() => {
+  return (
+    props.movie.ratings.reduce((a, b) => a + b, 0) / props.movie.ratings.length
+  ).toFixed(1);
 });
 
 const handleToggle = (value: string) => {
