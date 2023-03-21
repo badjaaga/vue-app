@@ -42,6 +42,9 @@ const getters: GetterTree<MoviesState, RootState> = {
   getSearchTerm(state: MoviesState) {
     return state.searchTerm;
   },
+  getSortByOption(state: MoviesState) {
+    return state.sortBy;
+  },
 };
 
 const mutations: MutationTree<MoviesState> = {

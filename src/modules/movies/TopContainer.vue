@@ -47,6 +47,7 @@
       <CustomToggle
         id="search-by-toggle"
         :toggle-options="searchByOptions"
+        :selected-option="searchByOption"
         @toggle-option="handleToggle"
         >Search by</CustomToggle
       >
@@ -55,7 +56,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onBeforeMount, computed, onUpdated } from "vue";
+import { ref, watch, onBeforeMount, computed } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 
@@ -66,19 +67,26 @@ import PrimaryButton from "./shared/PrimaryButton.vue";
 import DurationFormat from "./shared/DurationFormat.vue";
 import ParagraphLarge from "@/modules/movies/shared/ParagraphLarge.vue";
 import DateFormat from "./shared/DateFormat.vue";
+import { SearchByOption } from "@/modules/movies/types";
 
 const route = useRoute();
 const router = useRouter();
 const store = useStore();
 const searchByOptions = ["title", "genre"];
 const searchTerm = ref("");
+const searchByOption = ref<SearchByOption>("title");
 
 onBeforeMount(() => {
-  const { search } = route.query;
+  const { search, searchBy } = route.query;
 
   if (search && search !== store.getters["movies/getSearchTerm"]) {
     store.dispatch("movies/setSearchTermString", search);
     searchTerm.value = search as string;
+  }
+
+  if (searchBy && searchBy !== store.getters["movies/getSearchByOption"]) {
+    store.dispatch("movies/setSortByOption", searchBy);
+    searchByOption.value = searchBy as SearchByOption;
   }
 
   if (movieId.value) {
@@ -95,7 +103,6 @@ const movieId = computed(() => {
 });
 
 watch(movieId, (newValue, oldValue) => {
-  console.log(newValue);
   if (newValue !== oldValue) {
     store.dispatch("movies/fetchMovieById", newValue);
   }
@@ -105,8 +112,13 @@ watch(searchTerm, (newValue) => {
   store.dispatch("movies/setSearchTermString", newValue);
 });
 
-const handleToggle = (value: string) => {
+watch(searchByOption, (newValue) => {
+  store.dispatch("movies/setSearchOption", newValue);
+});
+
+const handleToggle = (value: SearchByOption) => {
   store.dispatch("movies/setSearchOption", value);
+  searchByOption.value = value;
 };
 
 const handleSearch = () => {
@@ -114,6 +126,8 @@ const handleSearch = () => {
   router.push({
     query: {
       search: store.getters["movies/getSearchTerm"],
+      searchBy: store.getters["movies/getSearchByOption"],
+      sortBy: store.getters["movies/getSortByOption"],
     },
   });
 };

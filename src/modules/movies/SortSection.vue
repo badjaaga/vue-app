@@ -5,6 +5,7 @@
         <slot />
         <CustomToggle
           class="sort__toggle"
+          :selected-option="sortByOption"
           :toggle-options="sortByOptions"
           @toggle-option="handleToggle"
           >Sort by</CustomToggle
@@ -17,13 +18,36 @@
 <script lang="ts" setup>
 import CustomToggle from "./shared/CustomToggle.vue";
 import { useStore } from "vuex";
+import { SortByOption } from "@/modules/movies/types";
+import { onBeforeMount, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 const store = useStore();
+const route = useRoute();
+const router = useRouter();
 
 const sortByOptions = ["release date", "rating"];
+const sortByOption = ref<SortByOption>("release date");
 
-const handleToggle = (value: string) => {
+onBeforeMount(() => {
+  const { sortBy } = route.query;
+
+  if (sortBy && sortBy !== store.getters["movies/getSortByOption"]) {
+    store.dispatch("movies/setSortByOption", sortBy);
+    sortByOption.value = sortBy as SortByOption;
+  }
+});
+
+const handleToggle = (value: SortByOption) => {
   store.dispatch("movies/setSortByOption", value);
+  sortByOption.value = value;
+  router.push({
+    query: {
+      search: store.getters["movies/getSearchTerm"],
+      searchBy: store.getters["movies/getSearchByOption"],
+      sortBy: store.getters["movies/getSortByOption"],
+    },
+  });
 };
 </script>
 

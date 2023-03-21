@@ -3,11 +3,11 @@
     <slot />
     <ul class="options">
       <li
-        v-for="(option, index) in props.toggleOptions"
+        v-for="option in props.toggleOptions"
         :key="option"
         class="option"
-        :class="{ selected: index === selectedIndex }"
-        @click="selectOption(index, option)"
+        :class="{ selected: selectedOption === option }"
+        @click="selectOption(option)"
       >
         {{ option }}
       </li>
@@ -16,17 +16,17 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, ref, defineEmits } from "vue";
+import { defineProps, defineEmits } from "vue";
 
 interface IProps {
   toggleOptions: string[];
+  selectedOption: string;
 }
 
 const props = defineProps<IProps>();
 const emit = defineEmits(["toggle-option"]);
-let selectedIndex = ref<number>(0);
-const selectOption = (index: number, option: string) => {
-  selectedIndex.value = index;
+
+const selectOption = (option: string) => {
   emit("toggle-option", option);
 };
 </script>
