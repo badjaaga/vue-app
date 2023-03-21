@@ -1,5 +1,9 @@
 <template>
-  <div class="movie-card">
+  <router-link
+    :to="{ name: 'movie', params: { id: movie.id } }"
+    class="movie-card"
+    role="listitem"
+  >
     <img v-lazy-image="movie.posterurl" />
     <div class="movie-card__title">
       <ParagraphMedium>{{ props.movie.title }}</ParagraphMedium>
@@ -16,7 +20,7 @@
         {{ genre }}
       </li>
     </ul>
-  </div>
+  </router-link>
 </template>
 
 <script lang="ts" setup>

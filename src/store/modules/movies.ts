@@ -36,6 +36,15 @@ const getters: GetterTree<MoviesState, RootState> = {
   getMovieById(state: MoviesState) {
     return state.movie;
   },
+  getSearchByOption(state: MoviesState) {
+    return state.searchBy;
+  },
+  getSearchTerm(state: MoviesState) {
+    return state.searchTerm;
+  },
+  getSortByOption(state: MoviesState) {
+    return state.sortBy;
+  },
 };
 
 const mutations: MutationTree<MoviesState> = {
@@ -122,7 +131,6 @@ const actions: ActionTree<MoviesState, any> = {
   },
   setSearchOption({ commit, dispatch }, option: string) {
     commit("setSearchBy", option);
-    dispatch("fetchMovies");
   },
   setSortByOption({ commit, dispatch }, option: string) {
     commit("setSortBy", option);
