@@ -1,6 +1,6 @@
 <template>
   <div v-if="movieId" class="movie-info">
-    <router-link :to="'/'" class="search_icon">
+    <router-link :to="{ name: 'home' }" class="search_icon">
       <img src="@/assets/icons/search.svg" alt="logo" />
     </router-link>
 

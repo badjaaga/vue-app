@@ -6,8 +6,9 @@ const routes = [
   {
     path: "/",
     component: App,
+    name: "home",
   },
-  { path: "/movie/:id", component: App },
+  { path: "/movie/:id", name: "movie", component: App },
   { path: "/:catchAll(.*)", component: NotFoundPage },
 ];
 

@@ -8,7 +8,9 @@
       found.</ParagraphMedium
     >
     <PrimaryButton
-      ><router-link to="/">Return to Home Page</router-link></PrimaryButton
+      ><router-link :to="{ name: 'home' }"
+        >Return to Home Page</router-link
+      ></PrimaryButton
     >
   </div>
 </template>
